@@ -1,11 +1,6 @@
 import "./styles.css";
-import ToDo from "./todo.js";
-
-const todo = new ToDo(
-  "Hacer Tarea",
-  "Hacer la tarea de la semana",
-  new Date(),
-  "Academico",
-  "10",
-);
-console.log(todo);
+import createTodo from "./todo.js";
+import createProject from "./project.js";
+const projects = [];
+createTodo("Wash dishes", "Do them today", "2026-10-12", "high");
+console.log(createTodo("Wash dishes", "Do them today", "2026-10-12", "high"));
