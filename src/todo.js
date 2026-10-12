@@ -20,3 +20,4 @@ export default function createTodo(
     getStatus,
   };
 }
+window.createTodo = createTodo;

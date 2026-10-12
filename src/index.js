@@ -1,6 +1,11 @@
 import "./styles.css";
 import createTodo from "./todo.js";
 import createProject from "./project.js";
-const projects = [];
-createTodo("Wash dishes", "Do them today", "2026-10-12", "high");
-console.log(createTodo("Wash dishes", "Do them today", "2026-10-12", "high"));
+import { projectManager } from "./projectsManager.js";
+import { controller } from "./projectController.js";
+const project1 = createProject("Hola");
+projectManager.addProject(project1);
+const project2 = createProject("None");
+projectManager.addProject(project2);
+const projects = projectManager.getProjects();
+controller.renderApp(projects);

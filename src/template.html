@@ -12,11 +12,7 @@
         <div class="sidebar-header">
           <h2>Projects</h2>
         </div>
-        <ul id="project-list" class="project-list">
-          <li class="project-item active">Inbox</li>
-          <li class="project-item">Work</li>
-          <li class="project-item">Groceries</li>
-        </ul>
+        <ul id="project-list" class="project-list"></ul>
         <button id="add-project-btn" class="btn btn-secondary">
           + New Project
         </button>
@@ -46,7 +42,10 @@
 
     <div id="todo-modal" class="modal hidden">
       <div class="modal-content">
-        <h2>Add New Task</h2>
+        <div class="form-header">
+          <h2>Add New Task</h2>
+          <button class="close">X</button>
+        </div>
         <form id="todo-form">
           <label for="title">Title</label>
           <input type="text" id="title" required />
