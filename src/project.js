@@ -1,4 +1,4 @@
-export default function Project(title) {
+export default function createProject(title) {
   let todos = [];
   let completed = false;
   const addTodo = (todo) => {
@@ -8,6 +8,12 @@ export default function Project(title) {
   const completeProject = () => {
     completed = true;
   };
+  const deleteTodo = (todo) => {
+    todos = todos.filter((element) => {
+      element !== todo;
+    });
+    return todos;
+  };
   const getStatus = () => completed;
   const getTodos = () => todos;
   return {
@@ -16,5 +22,6 @@ export default function Project(title) {
     getStatus,
     addTodo,
     getTodos,
+    deleteTodo,
   };
 }

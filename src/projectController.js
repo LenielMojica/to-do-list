@@ -1,18 +1,27 @@
+import createProject from "./project.js";
+
 import { projectManager } from "./projectsManager.js";
 
 export const controller = (() => {
   const addTodoBtn = document.getElementById("add-todo-btn");
-  const modal = document.getElementById("todo-modal");
+  const todoModal = document.getElementById("todo-modal");
   const closeBtn = document.querySelector(".close");
   const projectList = document.getElementById("project-list");
   const currentProjectTitle = document.getElementById("current-project-title");
   const todoContainer = document.getElementById("todo-container");
+  const todoForm = document.getElementById("todo-form");
+  const projectForm = document.getElementById("project-form");
+  const addProjectBtn = document.getElementById("add-project-btn");
+  const projectModal = document.getElementById("project-modal");
   addTodoBtn.addEventListener("click", () => {
-    modal.classList.remove("hidden");
+    todoModal.classList.remove("hidden");
   });
-  console.log(projectManager.getSelected());
+  addProjectBtn.addEventListener("click", () => {
+    projectModal.classList.remove("hidden");
+  });
   closeBtn.addEventListener("click", () => {
-    modal.classList.add("hidden");
+    todoForm.reset();
+    todoModal.classList.add("hidden");
   });
 
   const renderTodos = () => {
@@ -26,8 +35,15 @@ export const controller = (() => {
       todoLeftSide.classList.add("todo-left");
       todoCard.appendChild(todoLeftSide);
       const todoCheckBox = document.createElement("input");
+      todoCheckBox.addEventListener("click", () => {
+        todo.toggleCompleted();
+      });
+
       todoCheckBox.setAttribute("type", "checkbox");
       todoCheckBox.classList.add("todo-checkbox");
+      if (todo.getStatus()) {
+        todoCheckBox.checked = true;
+      }
       const todoTitle = document.createElement("span");
       todoTitle.classList.add("todo-title");
       todoLeftSide.appendChild(todoCheckBox);
@@ -48,10 +64,13 @@ export const controller = (() => {
       priority.innerHTML = todo.priority;
       date.innerHTML = todo.date;
       deleteBtn.innerHTML = "🗑️";
+      deleteBtn.addEventListener("click", () => {
+        todoContainer.innerHTML = "";
+        console.log(project.deleteTodo(todo));
+      });
     });
   };
-  const renderApp = (projects) => {
-    renderTodos();
+  const renderProjects = (projects) => {
     projectList.innerHTML = "";
 
     projects.forEach((project) => {
@@ -63,7 +82,8 @@ export const controller = (() => {
         todoContainer.innerHTML = "";
         projectManager.selectProject(project);
 
-        renderApp(projects);
+        renderProjects(projects);
+        renderTodos();
       });
 
       if (projectManager.getSelected() == project) {
@@ -71,5 +91,35 @@ export const controller = (() => {
       }
     });
   };
+  const renderApp = (projects) => {
+    renderTodos();
+    renderProjects(projects);
+  };
+  projectForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    projectManager.addProject(createProject(data.get("title")));
+    projectForm.reset();
+    projectModal.classList.add("hidden");
+    renderProjects(projectManager.getProjects());
+  });
+  todoForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const data = new FormData(e.target);
+
+    const project = projectManager.getSelected();
+    project.addTodo(
+      createTodo(
+        data.get("title"),
+        data.get("description"),
+        data.get("date"),
+        "",
+        data.get("priority"),
+      ),
+    );
+    todoForm.reset();
+    todoModal.classList.add("hidden");
+    renderTodos();
+  });
   return { renderApp };
 })();
