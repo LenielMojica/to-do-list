@@ -13,6 +13,7 @@ export const controller = (() => {
   const projectForm = document.getElementById("project-form");
   const addProjectBtn = document.getElementById("add-project-btn");
   const projectModal = document.getElementById("project-modal");
+  const expandedModal = document.createElement("div");
   addTodoBtn.addEventListener("click", () => {
     todoModal.classList.remove("hidden");
   });
@@ -42,9 +43,7 @@ export const controller = (() => {
 
       todoCheckBox.setAttribute("type", "checkbox");
       todoCheckBox.classList.add("todo-checkbox");
-      if (todo.getStatus()) {
-        todoCheckBox.checked = true;
-      }
+      todoCheckBox.checked = todo.getStatus() ? true : false;
       const todoTitle = document.createElement("span");
       todoTitle.classList.add("todo-title");
       todoLeftSide.appendChild(todoCheckBox);
@@ -71,10 +70,10 @@ export const controller = (() => {
         renderTodos();
       });
       todoCard.addEventListener("click", (event) => {
+        expandedModal.innerHTML = "";
         if (event.target !== event.currentTarget) return;
         const body = document.body;
 
-        const expandedModal = document.createElement("div");
         const modalContentContainer = document.createElement("div");
         const modalHeader = document.createElement("div");
         const title = document.createElement("h2");
@@ -89,10 +88,36 @@ export const controller = (() => {
         const otherDetailsContainer = document.createElement("div");
         otherDetailsContainer.classList.add("other-details");
         descriptionLabel.innerHTML = "Description:";
-        const priority = document.createElement("span");
-        priority.classList.add("priority-badge", todo.priority);
-        priority.innerHTML = todo.priority;
 
+        const priority = document.createElement("select");
+
+        priority.classList.add(
+          "priority-badge",
+          todo.priority,
+          "priority-extended",
+        );
+
+        const priorityOptions = ["Low", "Medium", "High"];
+        priorityOptions.forEach((levelText) => {
+          const option = document.createElement("option");
+
+          option.value = levelText.toLowerCase();
+
+          option.textContent = levelText;
+
+          priority.appendChild(option);
+        });
+        priority.value = todo.priority ? todo.priority.toLowerCase() : "low";
+        priority.addEventListener("change", (e) => {
+          const newPriority = e.target.value;
+
+          todo.priority = newPriority;
+
+          priority.classList.remove("low", "medium", "high");
+          priority.classList.add(newPriority);
+
+          renderTodos();
+        });
         const markComplete = document.createElement("button");
         markComplete.addEventListener("click", () => {
           todo.toggleCompleted();
@@ -100,6 +125,7 @@ export const controller = (() => {
             ? "Completed"
             : "Not completed";
           markComplete.innerHTML = todo.getStatus() ? "Undo" : "Mark Completed";
+          renderTodos();
         });
         const deleteBtn = document.createElement("button");
         deleteBtn.addEventListener("click", () => {
@@ -116,15 +142,24 @@ export const controller = (() => {
         btnContainer.classList.add("btn-container");
         btnContainer.appendChild(markComplete);
         btnContainer.appendChild(deleteBtn);
-        const description = document.createElement("p");
+        const description = document.createElement("textarea");
+        description.addEventListener("change", (e) => {
+          todo.description = e.target.value;
+        });
+        description.setAttribute("rows", "5");
+        description.setAttribute("cols", "40");
         const mainContent = document.createElement("div");
         mainContent.classList.add("main-content-extended");
         const dateLabel = document.createElement("h3");
         dateLabel.innerHTML = "Date:";
-        const date = document.createElement("span");
-        date.classList.add("todo-date");
-        date.innerHTML = todo.date;
-        description.innerHTML = todo.description;
+        const date = document.createElement("input");
+        date.setAttribute("type", "date");
+        date.classList.add("todo-date-extended");
+        date.value = todo.date;
+        date.addEventListener("change", () => {
+          todo.date = date.value;
+        });
+        description.value = todo.description;
         const closeBtn = document.createElement("button");
 
         closeBtn.innerHTML = "X";
@@ -157,6 +192,7 @@ export const controller = (() => {
 
         closeBtn.addEventListener("click", () => {
           expandedModal.classList.add("hidden");
+          renderTodos();
         });
         console.log(todo);
       });
@@ -207,7 +243,7 @@ export const controller = (() => {
         data.get("description"),
         data.get("date"),
         "",
-        data.get("priority"),
+        data.get("priority").toLowerCase(),
       ),
     );
     todoForm.reset();

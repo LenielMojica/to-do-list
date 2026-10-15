@@ -154,7 +154,12 @@ body {
   color: var(--text-muted);
   font-size: 0.875rem;
 }
-
+.todo-date-extended {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  border: none !important;
+  cursor: pointer;
+}
 /* Priority Badges */
 .priority-badge {
   padding: 0.25rem 0.75rem;
@@ -162,6 +167,10 @@ body {
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
+  cursor: pointer;
+}
+.priority-extended {
+  width: 100%;
 }
 .main-content-extended {
   display: flex;
@@ -173,7 +182,6 @@ body {
   justify-content: space-between;
 }
 .main-content-extended .priority-badge {
-  max-width: 50px;
 }
 .priority-badge.high {
   background-color: #fee2e2;

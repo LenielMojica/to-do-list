@@ -11,7 +11,7 @@ Default.addTodo(
   createTodo(
     "Hey",
     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, obcaecati. Praesentium, incidunt iure perspiciatis ullam veniam esse! Alias facilis sint nesciunt provident ipsum voluptatum. Et ut at voluptates fugit repellat.",
-    "2026-00-00",
+    "2026-02-01",
     "",
     "low",
   ),
