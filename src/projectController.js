@@ -25,6 +25,7 @@ export const controller = (() => {
   });
 
   const renderTodos = () => {
+    todoContainer.innerHTML = "";
     const project = projectManager.getSelected();
     currentProjectTitle.textContent = project.title;
     project.getTodos().forEach((todo) => {
@@ -65,8 +66,99 @@ export const controller = (() => {
       date.innerHTML = todo.date;
       deleteBtn.innerHTML = "🗑️";
       deleteBtn.addEventListener("click", () => {
-        todoContainer.innerHTML = "";
-        console.log(project.deleteTodo(todo));
+        project.deleteTodo(todo);
+
+        renderTodos();
+      });
+      todoCard.addEventListener("click", (event) => {
+        if (event.target !== event.currentTarget) return;
+        const body = document.body;
+
+        const expandedModal = document.createElement("div");
+        const modalContentContainer = document.createElement("div");
+        const modalHeader = document.createElement("div");
+        const title = document.createElement("h2");
+        const descriptionLabel = document.createElement("h3");
+        const descriptionContainer = document.createElement("div");
+        const dateContainer = document.createElement("div");
+        const completedLabel = document.createElement("span");
+
+        completedLabel.innerHTML = todo.getStatus()
+          ? "Completed"
+          : "Not completed";
+        const otherDetailsContainer = document.createElement("div");
+        otherDetailsContainer.classList.add("other-details");
+        descriptionLabel.innerHTML = "Description:";
+        const priority = document.createElement("span");
+        priority.classList.add("priority-badge", todo.priority);
+        priority.innerHTML = todo.priority;
+
+        const markComplete = document.createElement("button");
+        markComplete.addEventListener("click", () => {
+          todo.toggleCompleted();
+          completedLabel.innerHTML = todo.getStatus()
+            ? "Completed"
+            : "Not completed";
+          markComplete.innerHTML = todo.getStatus() ? "Undo" : "Mark Completed";
+        });
+        const deleteBtn = document.createElement("button");
+        deleteBtn.addEventListener("click", () => {
+          const project = projectManager.getSelected();
+          project.deleteTodo(todo);
+          expandedModal.classList.add("hidden");
+          renderTodos();
+        });
+        deleteBtn.innerHTML = "Delete";
+        deleteBtn.classList.add("delete-btn");
+        markComplete.innerHTML = todo.getStatus() ? "Undo" : "Mark Completed";
+        markComplete.classList.add("mark-btn");
+        const btnContainer = document.createElement("div");
+        btnContainer.classList.add("btn-container");
+        btnContainer.appendChild(markComplete);
+        btnContainer.appendChild(deleteBtn);
+        const description = document.createElement("p");
+        const mainContent = document.createElement("div");
+        mainContent.classList.add("main-content-extended");
+        const dateLabel = document.createElement("h3");
+        dateLabel.innerHTML = "Date:";
+        const date = document.createElement("span");
+        date.classList.add("todo-date");
+        date.innerHTML = todo.date;
+        description.innerHTML = todo.description;
+        const closeBtn = document.createElement("button");
+
+        closeBtn.innerHTML = "X";
+        title.innerHTML = todo.title;
+        modalHeader.classList.add("extended-header");
+        modalContentContainer.classList.add("modal-content");
+
+        expandedModal.classList.add("modal", "hidden");
+        closeBtn.classList.add("close");
+        body.appendChild(expandedModal);
+
+        expandedModal.classList.remove("hidden");
+        expandedModal.appendChild(modalContentContainer);
+        modalContentContainer.appendChild(modalHeader);
+        modalHeader.appendChild(title);
+        modalHeader.appendChild(closeBtn);
+        modalContentContainer.appendChild(mainContent);
+        descriptionContainer.appendChild(descriptionLabel);
+        descriptionContainer.appendChild(description);
+        mainContent.appendChild(descriptionContainer);
+        dateContainer.appendChild(dateLabel);
+        dateContainer.appendChild(date);
+        mainContent.appendChild(dateContainer);
+        otherDetailsContainer.appendChild(priority);
+
+        otherDetailsContainer.appendChild(completedLabel);
+        otherDetailsContainer.appendChild(btnContainer);
+
+        mainContent.appendChild(otherDetailsContainer);
+
+        closeBtn.addEventListener("click", () => {
+          expandedModal.classList.add("hidden");
+        });
+        console.log(todo);
       });
     });
   };
@@ -93,6 +185,7 @@ export const controller = (() => {
   };
   const renderApp = (projects) => {
     renderTodos();
+
     renderProjects(projects);
   };
   projectForm.addEventListener("submit", (e) => {

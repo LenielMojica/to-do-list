@@ -120,6 +120,7 @@ body {
   transition:
     transform 0.1s,
     box-shadow 0.1s;
+  cursor: pointer;
 }
 
 .todo-card:hover {
@@ -162,7 +163,18 @@ body {
   font-weight: 600;
   text-transform: uppercase;
 }
-
+.main-content-extended {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.btn-container {
+  display: flex;
+  justify-content: space-between;
+}
+.main-content-extended .priority-badge {
+  max-width: 50px;
+}
 .priority-badge.high {
   background-color: #fee2e2;
   color: #dc2626;
@@ -175,7 +187,11 @@ body {
   background-color: #e0f2fe;
   color: #0284c7;
 }
-
+.other-details {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 /* Buttons */
 .btn {
   padding: 0.6rem 1.2rem;
@@ -201,7 +217,28 @@ body {
   border: 1px solid var(--sidebar-hover);
   width: 100%;
 }
-
+.mark-btn {
+  padding: 10px;
+  background: none;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  border: 1px solid #0284c7;
+}
+.mark-btn:active {
+  background-color: #1f64c5;
+}
+.delete-btn {
+  padding: 10px;
+  background: none;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  border: 1px solid #c73302;
+}
+.delete-btn:active {
+  background-color: #e61f1f;
+}
 .sidebar .btn-secondary:hover {
   background-color: var(--sidebar-hover);
 }
@@ -248,7 +285,8 @@ body {
 .modal-content h2 {
   margin-bottom: 1rem;
 }
-.form-header {
+.form-header,
+.extended-header {
   display: flex;
   justify-content: space-between;
 }

@@ -9,9 +9,7 @@ export default function createProject(title) {
     completed = true;
   };
   const deleteTodo = (todo) => {
-    todos = todos.filter((element) => {
-      element !== todo;
-    });
+    todos = todos.filter((element) => element !== todo);
     return todos;
   };
   const getStatus = () => completed;
