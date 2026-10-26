@@ -2,7 +2,7 @@ export default function createTodo(
   title,
   description,
   date,
-  category,
+  project,
   priority,
 ) {
   let completed = false;
@@ -14,7 +14,7 @@ export default function createTodo(
     title,
     description,
     date,
-    category,
+    project,
     priority,
     toggleCompleted,
     getStatus,
