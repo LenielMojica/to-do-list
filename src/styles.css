@@ -140,8 +140,9 @@ body {
 }
 
 .todo-title {
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: 500;
+  border: none !important;
 }
 
 .todo-right {
@@ -181,7 +182,8 @@ body {
   display: flex;
   justify-content: space-between;
 }
-.main-content-extended .priority-badge {
+.main-content-extended .priority-badge-extended {
+  border: none !important;
 }
 .priority-badge.high {
   background-color: #fee2e2;
