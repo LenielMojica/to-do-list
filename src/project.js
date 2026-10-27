@@ -24,21 +24,7 @@ export default function createProject(title, todos = []) {
     return todos;
   };
   const getStatus = () => completed;
-  const getTodos = () => {
-    const data = JSON.parse(localStorage.getItem(title) || "[]");
-
-    const newData = data.map((element) =>
-      createTodo(
-        element.title,
-        element.description,
-        element.date,
-        element.project,
-        element.priority,
-      ),
-    );
-    console.log(newData);
-    return newData;
-  };
+  const getTodos = () => todos;
   return {
     title,
     completeProject,

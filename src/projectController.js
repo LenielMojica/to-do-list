@@ -41,6 +41,7 @@ export const controller = (() => {
       const todoCheckBox = document.createElement("input");
       todoCheckBox.addEventListener("click", () => {
         todo.toggleCompleted();
+        project.saveTodos();
       });
 
       todoCheckBox.setAttribute("type", "checkbox");
@@ -120,11 +121,13 @@ export const controller = (() => {
 
           priority.classList.remove("low", "medium", "high");
           priority.classList.add(newPriority);
-
+          project.saveTodos();
           renderTodos();
         });
         title.addEventListener("change", (e) => {
           todo.title = e.target.value;
+
+          project.saveTodos();
         });
         const markComplete = document.createElement("button");
         markComplete.addEventListener("click", () => {
@@ -133,6 +136,7 @@ export const controller = (() => {
             ? "Completed"
             : "Not completed";
           markComplete.innerHTML = todo.getStatus() ? "Undo" : "Mark Completed";
+          project.saveTodos();
           renderTodos();
         });
         const deleteBtn = document.createElement("button");
@@ -154,6 +158,7 @@ export const controller = (() => {
         const description = document.createElement("textarea");
         description.addEventListener("change", (e) => {
           todo.description = e.target.value;
+          project.saveTodos();
         });
         description.setAttribute("rows", "5");
         description.setAttribute("cols", "40");
@@ -167,6 +172,7 @@ export const controller = (() => {
         date.value = todo.date;
         date.addEventListener("change", () => {
           todo.date = date.value;
+          project.saveTodos();
         });
         description.value = todo.description;
         const closeBtn = document.createElement("button");
@@ -200,8 +206,14 @@ export const controller = (() => {
         mainContent.appendChild(otherDetailsContainer);
 
         closeBtn.addEventListener("click", () => {
-          if (!todo.title || todo.title.length < 1) {
-            return alert("The title can't be empty");
+          if (
+            !todo.title ||
+            todo.title.length < 1 ||
+            !todo.description ||
+            !todo.priority ||
+            !todo.date
+          ) {
+            return alert("Check the title length or the other fields");
           }
           expandedModal.classList.add("hidden");
 
@@ -243,9 +255,8 @@ export const controller = (() => {
     });
   };
   const renderApp = (projects) => {
-    renderTodos();
-
     renderProjects(projects);
+    renderTodos();
   };
   projectForm.addEventListener("submit", (e) => {
     e.preventDefault();

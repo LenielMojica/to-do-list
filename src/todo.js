@@ -4,8 +4,9 @@ export default function createTodo(
   date,
   project,
   priority,
+  isCompleted = false,
 ) {
-  let completed = false;
+  let completed = isCompleted;
   const getStatus = () => completed;
   const toggleCompleted = () => {
     completed = !completed;
@@ -18,6 +19,9 @@ export default function createTodo(
     priority,
     toggleCompleted,
     getStatus,
+    get completed() {
+      return completed;
+    },
   };
 }
 window.createTodo = createTodo;

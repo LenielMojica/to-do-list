@@ -13,8 +13,20 @@ if (savedData) {
     if (!element || !element.title) {
       return;
     }
-
-    const restoredProject = createProject(element.title);
+    const rawTodos = JSON.parse(localStorage.getItem(element.title) || "[]");
+    const cookedTodos = [];
+    rawTodos.forEach((todo) => {
+      const hydratedTodo = createTodo(
+        todo.title,
+        todo.description,
+        todo.date,
+        todo.project,
+        todo.priority,
+        todo.completed,
+      );
+      cookedTodos.push(hydratedTodo);
+    });
+    const restoredProject = createProject(element.title, cookedTodos);
 
     projectManager.addProject(restoredProject, false);
   });
